@@ -1,0 +1,16 @@
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ----------------------------< x:smoke >-----------------------------
+[INFO] Building smoke 1
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Downloading from central: https://repo.maven.apache.org/maven2/org/zzghost/nonexistent/ghost-artifact-93817/1.0/ghost-artifact-93817-1.0.pom
+[WARNING] The POM for org.zzghost.nonexistent:ghost-artifact-93817:jar:1.0 is missing, no dependency information available
+[INFO]
+[INFO] --- dependency:3.7.0:tree (default-cli) @ smoke ---
+[INFO] x:smoke:jar:1
+[INFO] +- org.apache.commons:commons-lang3:jar:3.14.0:compile
+[INFO] \- org.zzghost.nonexistent:ghost-artifact-93817:jar:1.0:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------

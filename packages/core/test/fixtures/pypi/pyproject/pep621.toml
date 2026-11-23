@@ -1,0 +1,21 @@
+[project]
+name = "fixture-project"
+version = "1.0.0"
+dependencies = [
+  "requests>=2.31,<3",
+  "numpy==1.26.4",
+  "pandas>=2.2.0",
+  "flask",
+  "uvicorn[standard]==0.30.6",
+  "pydantic>=2.7,<3",
+  "httpx[http2]>=0.27.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "black>=24.0",
+]
+docs = [
+  "mkdocs>=1.6",
+]

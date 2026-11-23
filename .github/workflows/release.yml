@@ -1,0 +1,76 @@
+# Release via Changesets. MANUAL ONLY: it runs when you start it from the Actions tab
+# (workflow_dispatch), never on a push, and only from `main` (started from any other branch, the
+# job is skipped). Nothing here has been triggered yet.
+#
+# How a release goes: merge PRs that carry a changeset (`npx changeset`); run this workflow, which
+# opens a "Version Packages" PR; run it again after merging that PR to publish
+# `slopsquatshield` to npm, then the identical build again as `@agivanttechnologies/slopsquatshield`.
+# Both install the same `slopsquatshield` command.
+#
+# - Builds before testing and publishing: core first, then the CLI that bundles it. Publishing an
+#   unbuilt `dist/` would ship an empty or stale CLI.
+# - Publishes with npm provenance, which needs this repository to be public and
+#   `repository.url` in packages/cli/package.json to match it exactly.
+# - Authentication: the first publish uses the `NPM_TOKEN` secret. After that, set up npm trusted
+#   publishing for this workflow (npmjs.com -> the package -> Settings -> Trusted publishing) and
+#   delete the secret; the `id-token: write` permission below is what trusted publishing uses.
+# - Does NOT create a GitHub release or tag. Those are made by hand, with a `v` tag (`v1.0.0`),
+#   which is what pre-commit users pin with `rev:`, plus the tarball, .vsix and SHA256SUMS.
+# - The VS Code extension is not published here (it's a private workspace package); it goes to the
+#   Marketplace and Open VSX by hand.
+#
+# CI already runs scripts/smoke-test-packed.sh against the packed tarball on every PR.
+name: Release
+
+on:
+  workflow_dispatch:
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write # the "Version Packages" commit
+  pull-requests: write # the "Version Packages" PR
+  id-token: write # npm provenance and trusted publishing
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing needs npm 11.5.1 or newer.
+      - run: npm install -g npm@^11.5.1
+      - run: npm ci --ignore-scripts
+      - run: npm rebuild @biomejs/biome esbuild --foreground-scripts
+      - run: npm run build
+      - run: npm test
+      - uses: changesets/action@v1
+        id: changesets
+        with:
+          version: npx changeset version
+          publish: npx changeset publish
+          title: 'Version Packages'
+          commit: 'Version Packages'
+          createGithubReleases: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: 'true'
+      # The same build again under the company scope. Changesets only knows the name in
+      # package.json, so this renames it in the runner's checkout (never committed) and publishes
+      # once more, with the same dist-tag Changesets used (`next` in pre-release mode).
+      - name: Publish the scoped mirror
+        if: steps.changesets.outputs.published == 'true'
+        working-directory: packages/cli
+        run: |
+          tag=$(node -p "require('../../.changeset/pre.json').tag" 2>/dev/null || echo latest)
+          npm pkg set name=@agivanttechnologies/slopsquatshield
+          npm publish --access public --provenance --tag "$tag"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

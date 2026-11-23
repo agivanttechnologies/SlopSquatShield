@@ -1,0 +1,96 @@
+{
+  "name": "slopsquatshield-vscode",
+  "displayName": "SlopSquatShield",
+  "description": "Advisory warnings for hallucinated and slopsquat-style packages in your manifests. Install-time enforcement is the SlopSquatShield CLI wrapper and agent hooks — this extension only reports.",
+  "author": {
+    "name": "Agivant Technologies Inc."
+  },
+  "version": "1.0.0",
+  "private": true,
+  "publisher": "agivant",
+  "icon": "icon.png",
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": ["Linters", "Other"],
+  "keywords": ["security", "npm", "pypi", "maven", "supply chain", "slopsquatting", "ai"],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "workspaceContains:**/package.json",
+    "workspaceContains:**/requirements.txt",
+    "workspaceContains:**/pyproject.toml",
+    "workspaceContains:**/Pipfile",
+    "workspaceContains:**/pom.xml"
+  ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": false
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "slopsquatshield.scanWorkspace",
+        "title": "SlopSquatShield: Scan workspace manifests"
+      },
+      {
+        "command": "slopsquatshield.addToAllowlist",
+        "title": "SlopSquatShield: Add package to .slopsquatshield"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "slopsquatshield.addToAllowlist",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "SlopSquatShield",
+      "properties": {
+        "slopsquatshield.enable": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check dependencies in package.json, requirements.txt, pyproject.toml, Pipfile and pom.xml, and show findings as diagnostics. Package names are sent to the public registry services (deps.dev, npm and api.npmjs.org, PyPI and pypistats.org, Maven Central) — the same lookups the CLI makes."
+        },
+        "slopsquatshield.debounceMs": {
+          "type": "number",
+          "default": 500,
+          "minimum": 0,
+          "description": "How long to wait after a manifest is opened or saved before checking it."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "typecheck": "tsc --noEmit -p .",
+    "package": "npm run build && node ../../scripts/copy-package-docs.mjs copy NOTICE THIRD_PARTY_NOTICES.md && vsce package --no-dependencies --out slopsquatshield-vscode.vsix && node ../../scripts/copy-package-docs.mjs clean NOTICE THIRD_PARTY_NOTICES.md",
+    "test": "vitest run",
+    "test:integration": "node test-integration/run.mjs"
+  },
+  "devDependencies": {
+    "@slopsquatshield/core": "*",
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.2.1",
+    "esbuild": "^0.27.7",
+    "ovsx": "^0.10.1",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agivanttechnologies/SlopSquatShield.git",
+    "directory": "packages/extension"
+  },
+  "bugs": {
+    "url": "https://github.com/agivanttechnologies/SlopSquatShield/issues"
+  },
+  "homepage": "https://github.com/agivanttechnologies/SlopSquatShield#readme"
+}

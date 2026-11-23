@@ -1,0 +1,3 @@
+# Privacy
+
+SlopSquatShield does not collect, store, or send any personal data to Agivant Technologies Inc., and it contains no analytics or telemetry. When it checks a package, your machine sends the request, including your IP address and the package name, directly to public package registries and metadata services (npm, PyPI, Maven Central, deps.dev and pypistats.org), each of which handles it under its own privacy policy. If you contact us, report a vulnerability, open an issue, or contribute code, we handle the information you provide as described in Agivant Technologies Inc.'s Privacy Policy at <https://www.agivant.com/policies/privacy-policy>.

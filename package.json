@@ -1,0 +1,33 @@
+{
+  "name": "slopsquatshield-monorepo",
+  "private": true,
+  "license": "Apache-2.0",
+  "type": "module",
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "build": "npm run build -w @slopsquatshield/core && npm run build --workspaces --if-present",
+    "test": "vitest run",
+    "lint": "biome check .",
+    "format": "biome format --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@changesets/cli": "^3.0.3",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "allowScripts": {
+    "better-sqlite3@13.0.3": true,
+    "@biomejs/biome@1.9.4": true,
+    "esbuild@0.27.7": true,
+    "esbuild@0.21.5": true,
+    "msw@2.15.0": true
+  },
+  "author": {
+    "name": "Agivant Technologies Inc."
+  }
+}

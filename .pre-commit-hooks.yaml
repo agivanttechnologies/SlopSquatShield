@@ -1,0 +1,26 @@
+# Hook definition for the pre-commit framework (https://pre-commit.com). FR-20.1.
+#
+# Use it from a project's .pre-commit-config.yaml:
+#
+#   repos:
+#     - repo: https://github.com/agivanttechnologies/SlopSquatShield
+#       rev: v1.0.0            # pin a release tag
+#       hooks:
+#         - id: slopsquatshield
+#
+# ADVISORY: this hook reports; it is not the enforcement boundary (that is the install-time shell
+# wrapper and the AI-agent hooks). Only a BLOCK (a staged dependency that does not exist on its
+# registry, or several strong warning signs at once) fails the commit — WARN and an unreachable
+# registry print and pass. Override order: fix -> `slopsquatshield allow <pkg>` -> `--no-verify`.
+- id: slopsquatshield
+  name: SlopSquatShield (advisory dependency check)
+  description: Flags hallucinated and slopsquat-style packages in staged manifests. Only a BLOCK fails.
+  language: node
+  # The CLI is installed from npm into the hook's own environment. Keep this version in step with
+  # the release tag a project pins with `rev:`.
+  additional_dependencies: ['slopsquatshield@1.0.0']
+  entry: slopsquatshield precommit
+  files: '(^|/)(package\.json|requirements\.txt|pyproject\.toml|Pipfile|pom\.xml)$'
+  pass_filenames: true
+  # One process for all staged manifests, so each registry lookup is shared.
+  require_serial: true

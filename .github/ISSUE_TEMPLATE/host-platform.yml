@@ -1,0 +1,55 @@
+name: Host / platform report
+description: Tell us whether SlopSquatShield works on an OS, shell, agent host or editor, especially one listed as not yet verified.
+labels: [platform-report]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Reports that something **works** are as useful as reports that it doesn't: they're how a
+        host or platform moves from "built, not yet verified" to verified.
+  - type: dropdown
+    id: result
+    attributes:
+      label: Result
+      options: [Works as documented, Partly works, Doesn't work]
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: Host, editor or platform tested
+      placeholder: e.g. Cursor 1.x on macOS 15, zsh on macOS, Codex CLI, Antigravity on Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: What you ran
+      description: For an agent host, the prompt or command that made the agent install a package that doesn't exist.
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: What you saw
+      description: The verdict text, exit code, and what the host or editor showed.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: slopsquatshield --version
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: slopsquatshield doctor
+      render: text
+  - type: input
+    id: env
+    attributes:
+      label: OS, shell, Node.js version and install method
+    validations:
+      required: true

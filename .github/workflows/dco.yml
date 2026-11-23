@@ -1,0 +1,28 @@
+# Copyright 2026 Agivant Technologies Inc.
+# SPDX-License-Identifier: Apache-2.0
+#
+# Developer Certificate of Origin check: every commit in a pull request must carry a
+# "Signed-off-by:" line with its author's email (git commit -s). See CONTRIBUTING.md and DCO.txt.
+# Merge commits and GitHub bot commits (such as Changesets' "Version Packages" pull request) are
+# skipped. Make the "dco" job a required check on main.
+name: DCO
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dco:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Check every commit is signed off
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: bash scripts/check-dco.sh "$BASE" "$HEAD"

@@ -1,0 +1,4 @@
+# The pack-time copies of the root README and LICENSE (scripts/copy-package-docs.mjs).
+# Anchored to this directory so the README.md files in the subfolders are NOT ignored.
+/README.md
+/LICENSE

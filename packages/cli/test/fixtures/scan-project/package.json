@@ -1,0 +1,10 @@
+{
+  "name": "fixture-app",
+  "version": "1.0.0",
+  "dependencies": {
+    "ssg-test-not-a-real-package": "^1.0.0",
+    "fresh-lib": "^1.0.0",
+    "unpopular-lib": "^1.0.0",
+    "no-repo-lib": "^1.0.0"
+  }
+}
