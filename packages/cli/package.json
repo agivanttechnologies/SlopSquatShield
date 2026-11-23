@@ -1,6 +1,6 @@
 {
   "name": "slopsquatshield",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Install-time detector for hallucinated and slopsquat-style packages (npm, PyPI, Maven): a safe-install wrapper, AI-agent hooks, a manual scan and a pre-commit check.",
   "author": {
     "name": "Agivant Technologies Inc."
