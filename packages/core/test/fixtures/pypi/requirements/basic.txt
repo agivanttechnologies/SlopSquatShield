@@ -1,0 +1,15 @@
+# Fixture requirements.txt — comments and blank lines must be skipped.
+
+requests[socks]>=2.31,<3
+numpy==1.26.4
+pandas>=2.2.0
+flask
+uvicorn[standard]==0.30.6
+pydantic>=2.7,<3
+httpx[http2]>=0.27.0
+sqlalchemy==2.0.35
+pytest>=8.0
+click[cli]>=8.1,<9
+
+-r other-requirements.txt
+--hash=sha256:deadbeef

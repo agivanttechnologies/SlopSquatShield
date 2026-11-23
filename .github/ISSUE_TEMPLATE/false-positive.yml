@@ -1,0 +1,48 @@
+name: False positive
+description: A real, legitimate package was blocked or warned about.
+labels: [false-positive]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        `slopsquatshield allow <package>` gets you unblocked now. Please still report it: we fix
+        the rule or document the limit, and don't close these as "use the allowlist".
+  - type: input
+    id: package
+    attributes:
+      label: Package name
+      placeholder: e.g. some-package, or com.example:artifact for Maven
+    validations:
+      required: true
+  - type: dropdown
+    id: ecosystem
+    attributes:
+      label: Ecosystem
+      options: [npm, PyPI, Maven]
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: The full verdict text, and the exit code
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is it legitimate?
+      description: For example a link to its repository, or who publishes it.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: slopsquatshield --version
+    validations:
+      required: true
+  - type: input
+    id: surface
+    attributes:
+      label: Where you saw it
+      placeholder: shell wrapper, agent hook (which host), scan, pre-commit, VS Code extension

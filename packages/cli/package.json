@@ -1,0 +1,66 @@
+{
+  "name": "slopsquatshield",
+  "version": "0.0.0",
+  "description": "Install-time detector for hallucinated and slopsquat-style packages (npm, PyPI, Maven): a safe-install wrapper, AI-agent hooks, a manual scan and a pre-commit check.",
+  "author": {
+    "name": "Agivant Technologies Inc."
+  },
+  "keywords": [
+    "security",
+    "supply-chain",
+    "slopsquatting",
+    "hallucination",
+    "ai",
+    "llm",
+    "npm",
+    "pypi",
+    "maven",
+    "pre-commit",
+    "claude-code",
+    "cursor",
+    "codex"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agivanttechnologies/SlopSquatShield.git",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/agivanttechnologies/SlopSquatShield/issues"
+  },
+  "homepage": "https://github.com/agivanttechnologies/SlopSquatShield#readme",
+  "type": "module",
+  "bin": {
+    "slopsquatshield": "dist/index.js"
+  },
+  "files": ["dist/index.js", "README.md", "LICENSE", "NOTICE", "THIRD_PARTY_NOTICES.md"],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build",
+    "prepack": "node ../../scripts/copy-package-docs.mjs copy",
+    "postpack": "node ../../scripts/copy-package-docs.mjs clean"
+  },
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "cli-table3": "^0.6.5",
+    "commander": "^12.1.0",
+    "cross-spawn": "^7.0.6",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@slopsquatshield/core": "*",
+    "@types/cross-spawn": "^6.0.6",
+    "msw": "^2.15.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}
